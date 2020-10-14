@@ -145,7 +145,7 @@ production:
   schema_search_path: public
 ```
 
-![alt text](imagens/add-ons-postgres.png "Add-On PostgreSQL")
+![alt text](imagens/enviroments-postgres.png "Add-On PostgreSQL")
 
 #### 3.3) Adequando a Aplicação
 
