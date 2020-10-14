@@ -33,4 +33,4 @@
 
 #### 3.3) Adequando a Aplicação
 
-#### 3.3) Disponibilizando a Aplicação
+#### 3.4) Disponibilizando a Aplicação
