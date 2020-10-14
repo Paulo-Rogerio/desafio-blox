@@ -19,4 +19,13 @@ test:
   schema_search_path: agenda
   database: blox_test
   username: agenda
-  password: "123456"    
+  password: "123456"  
+  
+production:
+  <<: *default
+  port: 5432
+  host: <%= ENV['PG_HOST'] %>
+  database: <%= ENV['PG_DATA'] %>
+  username: <%= ENV['PG_USER'] %>
+  password: <%= ENV['PG_PASS'] %>
+  schema_search_path: public
