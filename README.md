@@ -17,7 +17,9 @@
 
 Para a reprodução desse sistema é necessário ter alguns recursos instalado em sua máquina. O *Docker* se faz necessário, pois o bancos **Desenvolvimento** e **Test**, serão disponibilizado por essa ferramenta. Você pode rodar os 2 banco simuntaneamente pois cada banco roda em um contexto totalmente isolado e em portas diferentes. 
 
-Já o *Rbenv* é responsável por gerenciar as versões de Ruby instalado em meu S.O, caso vc opte em usar outro gerenciador de Ruby, ou mesmo instalar nativamente a versão no seu S.O , funcionará perfeitamente. **Obs.: Caso opte por instalar o Ruby diretamente em seu S.O deverá instalar a versão do Ruby 2.4.7**
+Já o *Rbenv* é responsável por gerenciar as versões de Ruby instalado em meu S.O, caso vc opte em usar outro gerenciador de Ruby, ou mesmo instalar nativamente a versão no seu S.O , funcionará perfeitamente. 
+
+**Obs.: Caso opte por instalar o Ruby diretamente em seu S.O deverá instalar a versão do Ruby 2.4.7**
 
 #### 1.1) Instalar Docker
 
@@ -81,18 +83,44 @@ bundle exec rake db:migrate
 
 #### Populando Dados Inicias
 
-Para criar dados inicias , foi usado um recurso do rails que permite criar tarefas. Essa tarefa popula dados inicias que meu sistema precisa. Caso queira ver o conteúdo dessa task, basta acessar o diretório **lib** => **task** => **popular.rake**
+Para criar dados inicias , foi usado um recurso do rails que permite criar tarefas. Essa tarefa popula dados inicias que meu sistema precisa. Caso queira ver o conteúdo dessa task, basta acessar o diretório:
+=> **lib** => **task** => **popular.rake**
 
 ```bash
 bundle exec rake popular:dados
 ```
 
-
 #### 2.2) Ambiente de Test Rspec
 
+Para rodar os teste automatizados, vamos fazer isso em um banco separado. O banco de desenvolvimento roda na porta **5432** , já o banco de Teste roda na porta **5433**. 
 
+#### Executando Rspec
+
+O script abaixo, sobe um banco de Teste, popula o novo banco na nova instância do Postgres que roda na porta 5433, roda as migrates e logo apos roda os testes automatizados.
+
+```bash
+#!/usr/bin/env bash
+set -e
+cd $(dirname $0)
+sh stop.sh
+sh start.sh
+sleep 5 
+export PGPASSWORD=123456; psql -d postgres -U postgres -h localhost -p 5433 < database.sql
+cd -
+alias cp=cp
+RAILS_ENV=test bundle exec rake db:migrate
+RAILS_ENV=test bundle exec rspec
+```
+
+Para rodar os testes, basta executar esse comando abaixo. Os testes criado ficam disponível dentro da pasta **spec** => **models**
+
+```bash
+sh scripts_auxiliares/rspec/rspec.sh
+```
 
 ## 3) Subindo para Produção
+
+Se tudo que você fez saiu conforme o esperado, está na hora de irmos para produção.
 
 #### 3.1) Add-Ons Heroku
 
