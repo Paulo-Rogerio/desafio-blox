@@ -120,9 +120,13 @@ sh scripts_auxiliares/rspec/rspec.sh
 
 ## 3) Subindo para Produção
 
-Se tudo que você fez saiu conforme o esperado, está na hora de irmos para produção.
+Se tudo que você fez saiu conforme o esperado, está na hora de irmos para produção. Primeiramente, deve-se criar uma conta dentro do portal do Heroku.
+
+* [Heroku](https://heroku.com)
 
 #### 3.1) Add-Ons Heroku
+
+![alt text](imagens/add-ons-postgres.png "Add-On PostgreSQL")
 
 #### 3.2) Variaveis de Ambiente Heroku
 
