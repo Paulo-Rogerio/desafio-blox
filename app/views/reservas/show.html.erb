@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Evento:</strong>
+  <%= @reserva.evento %>
+</p>
+
+<p>
+  <strong>Inicio:</strong>
+  <%= @reserva.inicio.strftime('%H:%M') %>
+</p>
+
+<p>
+  <strong>Termino:</strong>
+  <%= @reserva.termino.strftime('%H:%M') %>
+</p>
+
+<p>
+  <strong>Sala:</strong>
+  <% @sala.each do |s| %>
+   <%= s.descricao %><br>
+  <% end %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <% @user.each do |u| %>
+   <%= u.email %><br>
+  <% end %>  
+</p>
+
+<%= link_to 'Edit', edit_reserva_path(@reserva) %> |
+<%= link_to 'Back', reservas_path %>

@@ -1,0 +1,20 @@
+CREATE ROLE agenda WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD '123456';
+
+CREATE DATABASE blox_development
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+
+\connect blox_development;
+
+CREATE SCHEMA agenda
+    AUTHORIZATION agenda;    	

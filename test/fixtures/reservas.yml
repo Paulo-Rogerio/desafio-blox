@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  evento: MyString
+  inicio: 2020-10-13 23:46:55
+  termino: 2020-10-13 23:46:55
+  sala: one
+  user: one
+
+two:
+  evento: MyString
+  inicio: 2020-10-13 23:46:55
+  termino: 2020-10-13 23:46:55
+  sala: two
+  user: two

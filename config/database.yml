@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: utf-8
+  pool: 5
+  schema_search_path: agenda
+
+development:
+  <<: *default
+  port: 5432
+  host: localhost
+  database: blox_development
+  username: agenda
+  password: "123456"
+
+test:
+  <<: *default
+  port: 5433
+  host: localhost
+  schema_search_path: agenda
+  database: blox_test
+  username: agenda
+  password: "123456"    
