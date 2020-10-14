@@ -4,8 +4,8 @@
     - [1.1) Instalar Docker](#11-instalar-docker)
     - [1.2) Instalar Rbenv](#12-instalar-rbenv)
   - [2) Rodando o Projeto](#2-rodando-o-projeto)
-    - [2.1) Ambiente de Test Rspec](#21-ambiente-de-test-rspec)
-    - [2.2) Ambiente de Desenvolvimento](#22-ambiente-de-desenvolvimento)
+    - [2.1) Ambiente de Desenvolvimento](#21-ambiente-de-desenvolvimento)
+    - [2.2) Ambiente de Test Rspec](#22-ambiente-de-test-rspec)
   - [3) Subindo para Produção](#3-subindo-para-produ%C3%A7%C3%A3)
     - [3.1) Add-Ons Heroku](#31-add-ons-heroku)
     - [3.2) Variaveis de Ambiente Heroku](#32-variaveis-de-ambiente-heroku)
@@ -15,15 +15,82 @@
 
 ## 1) O que vou precisar
 
+Para a reprodução desse sistema é necessário ter alguns recursos instalado em sua máquina. O *Docker* se faz necessário, pois o bancos **Desenvolvimento** e **Test**, serão disponibilizado por essa ferramenta. Você pode rodar os 2 banco simuntaneamente pois cada banco roda em um contexto totalmente isolado e em portas diferentes. 
+
+Já o *Rbenv* é responsável por gerenciar as versões de Ruby instalado em meu S.O, caso vc opte em usar outro gerenciador de Ruby, ou mesmo instalar nativamente a versão no seu S.O , funcionará perfeitamente. **Obs.: Caso opte por instalar o Ruby diretamente em seu S.O deverá instalar a versão do Ruby 2.4.7**
+
 #### 1.1) Instalar Docker
+
+* [Instalação do Docker](https://docs.docker.com/engine/install/)
 
 #### 1.2) Instalar Rbenv
 
-## 1) Rodando o Projeto
+* [Instalação do Rbenv](https://github.com/rbenv/rbenv)
 
-#### 2.1) Ambiente de Test Rspec
+## 2) Rodando o Projeto
 
 #### 2.1) Ambiente de Desenvolvimento
+
+Após clonar o projeto para sua máquina, você deverá realizar alguns procedimentos. Ainda na pasta do projeto é necessário instalar todas as dependências que esse projeto precisa, subir o banco, popular as tabelas e dados iniciais.
+
+#### Instalando Dependências
+
+```bash
+bundle isntall
+```
+
+#### Iniciando Banco de Development
+
+O script abaixo se encarrega de subir um Banco Postgres na ultima versão 12, após a instância subir, cria-se um usuário , um banco, e um schema.
+
+```sql
+CREATE ROLE agenda WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD '123456';
+
+CREATE DATABASE blox_development
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+
+\connect blox_development;
+
+CREATE SCHEMA agenda
+    AUTHORIZATION agenda;
+```
+
+Os scripts bash abaixo, já realiza esses passos.
+
+```bash
+sh scripts_auxiliares/development/start.sh
+sh scripts_auxiliares/development/database.sh
+```
+
+#### Migrates 
+
+```bash
+bundle exec rake db:migrate
+```
+
+#### Populando Dados Inicias
+
+Para criar dados inicias , foi usado um recurso do rails que permite criar tarefas. Essa tarefa popula dados inicias que meu sistema precisa. Caso queira ver o conteúdo dessa task, basta acessar o diretório **lib** => **task** => **popular.rake**
+
+```bash
+bundle exec rake popular:dados
+```
+
+
+#### 2.2) Ambiente de Test Rspec
+
+
 
 ## 3) Subindo para Produção
 
