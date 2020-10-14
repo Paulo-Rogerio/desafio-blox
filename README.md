@@ -126,10 +126,69 @@ Se tudo que você fez saiu conforme o esperado, está na hora de irmos para prod
 
 #### 3.1) Add-Ons Heroku
 
+Um vez logado é necessário adicionar esse recurso, para que o banco possa ser disponibilizado dentro da estrutura do Heroku.
+
 ![alt text](imagens/add-ons-postgres.png "Add-On PostgreSQL")
 
 #### 3.2) Variaveis de Ambiente Heroku
 
+Será necessário definir algumas variáveis de ambiente, essa variáveis serão utilizadas pela string de conexão com o Banco. Será necessário definir as seguintes variáveis de ambiente: **PG_HOST** , **PG_DATA**, **PG_USER**, **PG_PASS**
+
+```yaml
+production:
+  <<: *default
+  port: 5432
+  host: <%= ENV['PG_HOST'] %>
+  database: <%= ENV['PG_DATA'] %>
+  username: <%= ENV['PG_USER'] %>
+  password: <%= ENV['PG_PASS'] %>
+  schema_search_path: public
+```
+
+![alt text](imagens/add-ons-postgres.png "Add-On PostgreSQL")
+
 #### 3.3) Adequando a Aplicação
 
+No enviroment de produção devemos garantir que alguns parâmetros estejam configurados. Esses parâmetros é para dizer para aplicação quem irá gerar os assets, como os logs serão tratados la no heroku.
+
+```ruby
+  # Compress JavaScripts and CSS.
+  config.assets.js_compressor = Uglifier.new(mangle: false, harmony: true)
+
+  # Arquivos Estáticos
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
+  # Logs
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+```
+
 #### 3.4) Disponibilizando a Aplicação
+
+* [Deploy no Heroku](https://devcenter.heroku.com/articles/getting-started-with-rails5)
+
+```bash
+heroku create
+git config --list | grep heroku
+git push heroku master
+heroku run rake db:migrate
+heroku run rake popular:dados
+heroku ps:scale web=1
+```
+
+#### Mudando a Senha - Produção
+
+```bash
+heroku run rails c
+user = User.find(1)
+user.password = 'new password'
+user.password_confirmation = 'new password'
+user.save!
+```
+
+#### Acessando a aplicação
+
+https://calm-dawn-36934.herokuapp.com
