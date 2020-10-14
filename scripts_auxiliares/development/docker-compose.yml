@@ -1,8 +1,8 @@
 version: '3.5'
 
 services:
-  postgres_staging:
-    container_name: postgres_staging
+  postgres_development:
+    container_name: postgres_development
     image: postgres:12
     environment:
       POSTGRES_USER: postgres
